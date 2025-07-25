@@ -29,3 +29,34 @@ functions:
  They will be given a seat number
 
 '''
+
+class Stock:
+    def __init__(self, name, brand, rarity, value):
+        self._name = name
+        self._brand = brand
+        self._rarity = rarity
+        self._value = value
+
+    def getName(self):
+        return (self._name)
+    
+    def getBrand(self):
+        return (self._brand)
+    
+    def getRarity(self):
+        return (self._rarity)
+    
+    def getValue(self):
+        return (self._value)
+    
+    def setRarity(self, rarity):
+        self._rarity = rarity
+
+    def setValue(self, value):
+        self._value = value
+
+Coke = Stock(name = "Solo", brand = "Coca-Cola", rarity = "Common", value = 3000)
+
+print(Coke.getRarity())
+print(Coke.setRarity("Rare"))
+print(Coke.getRarity())
