@@ -1,7 +1,7 @@
 '''
 use numpy module for calculations and randomness
 use pytest for testing the code
-use pygame for gui
+use rich for prettier text (or use pygame for gui)
 
 Class Game
 A collection of players each with their own points.
@@ -29,19 +29,18 @@ functions:
  They will be given a seat number
 
 '''
-
 class Stock:
-    def __init__(self, name, brand, rarity, value):
-        self._name = name
-        self._brand = brand
+    def __init__(self, brandName, brandType, rarity, value):
+        self._brandName = brandName
+        self._brandType = brandType
         self._rarity = rarity
         self._value = value
 
-    def getName(self):
-        return (self._name)
+    def getBrandName(self):
+        return (self._brandName)
     
-    def getBrand(self):
-        return (self._brand)
+    def getBrandType(self):
+        return (self._brandType)
     
     def getRarity(self):
         return (self._rarity)
@@ -55,7 +54,14 @@ class Stock:
     def setValue(self, value):
         self._value = value
 
-Coke = Stock(name = "Solo", brand = "Coca-Cola", rarity = "Common", value = 3000)
+
+class Pack:
+    def __init__(self, stocks, packNumber, stocksRemaining):
+        self.stocks = stocks
+        self.packNumber = packNumber
+        self.stocksRemaining = stocksRemaining
+
+Coke = Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
 
 print(Coke.getRarity())
 print(Coke.setRarity("Rare"))
