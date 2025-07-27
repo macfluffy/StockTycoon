@@ -2,6 +2,7 @@
 use numpy module for calculations and randomness
 use pytest for testing the code
 use rich for prettier text (or use pygame for gui)
+more itter tools ?
 
 Class Game
 A collection of players each with their own points.
@@ -12,7 +13,7 @@ Packs are passed to the right in the first and last rounds. Second round packs a
 Class Player
 A player will have a hand or collection of stocks/cards, a seat number, a name
 
-Class Hand
+Class Hand/Portfolio
 A hand consists of a collection of stocks/cards. We add cards/stock to this from packs.
 
 Inside the hand class we calculation the value, based on set collections
@@ -57,12 +58,38 @@ class Stock:
 
 class Pack:
     def __init__(self, stocks, packNumber, stocksRemaining):
-        self.stocks = stocks
-        self.packNumber = packNumber
-        self.stocksRemaining = stocksRemaining
+        self._stocks = stocks
+        self._packNumber = packNumber
+        self._stocksRemaining = stocksRemaining
+
+    def removeStock(self, stock):
+        self._stocks.remove(stock)
+        self._stocksRemaining -= 1
+        
+    '''For each stock inside the pack, print out the stocks (brandname, brandtype, rarity and value)
+        When the pack goes down to 1 stock, use a different method as lists are not iterable meaning it does
+        not treat a list with only 1 item in it as a list.'''    
+    def displayPackContents(self):
+        stockNumber = 1
+        for stocks in self._stocks:
+            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
+            stockNumber += 1
+        
+    def getStocksRemaining(self):
+        return (self._stocksRemaining)
 
 Coke = Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
-
 print(Coke.getRarity())
 print(Coke.setRarity("Rare"))
 print(Coke.getRarity())
+
+Pepsi = Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
+print(Pepsi.getRarity())
+print(Pepsi.setRarity("Legendary"))
+print(Pepsi.getRarity())
+
+pack1 = Pack([Coke, Pepsi], 1, 2)
+pack1.displayPackContents()
+pack1.removeStock(Coke)
+print("        ")
+pack1.displayPackContents()
