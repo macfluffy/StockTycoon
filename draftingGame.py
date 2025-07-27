@@ -78,6 +78,29 @@ class Pack:
     def getStocksRemaining(self):
         return (self._stocksRemaining)
 
+    
+class Portfolio:
+    def __init__(self, stocks, totalValue):
+        self._stocks = stocks
+        self._totalValue = totalValue
+
+    def addStock(self, stock):
+        self._stocks.append(stock)
+        updateValue()
+        
+    def updateValue(self):
+        self._totalValue += self._stocks(-1, getValue())
+
+    def getTotalValue(self):
+        return (self._totalValue)
+    
+    def displayPortfolio(self):
+        stockNumber = 1
+        for stocks in self._stocks:
+            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
+            stockNumber += 1
+
+
 Coke = Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
 print(Coke.getRarity())
 print(Coke.setRarity("Rare"))
