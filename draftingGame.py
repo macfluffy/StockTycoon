@@ -84,16 +84,20 @@ class Pack:
 
 
 class Portfolio:
-    def __init__(self, stocks, totalValue):
-        self._stocks = stocks
-        self._totalValue = totalValue
+    def __init__(self, owner):
+        self._owner = owner
+        self._stocks = []
+        self._totalValue = 0
+
+    def firstPickStock(self, stock):
+        self._stocks = stock
 
     def addStock(self, stock):
         self._stocks.append(stock)
-        updateValue()
+        self.updateValue(stock)
         
-    def updateValue(self):
-        self._totalValue += self._stocks(-1, getValue())
+    def updateValue(self, stock):
+        self._totalValue += stock.getValue()
 
     def getTotalValue(self):
         return (self._totalValue)
@@ -104,6 +108,26 @@ class Portfolio:
         for stocks in self._stocks:
             print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
             stockNumber += 1
+
+
+class Player:
+    def __init__(self, playerName, playerNumber):
+        self._playerName = playerName
+        self._playerNumber = playerNumber
+        self._portfolio = "empty"
+        self._currentPack = "empty"
+
+    def getPlayerName(self):
+        return (self._playerName)
+    
+    def getPlayerNumber(self):
+        return (self._playerNumber)
+    
+    def assignPortfolio(self, portfolio):
+        self._portfolio = portfolio
+    
+    def displayPortfolio(self):
+        self._portfolio.displayPortfolio()
 
 
 Coke = Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
@@ -127,5 +151,12 @@ print(pack1.getStock(0))
 print("        ")
 print("        ")
 
-portfolio1 = Portfolio([pack1.getStock(0), pack1.getStock(1)], [Pepsi.getValue() + Solo.getValue()])
+player1 = Player("Josh", 1)
+portfolio1 = Portfolio(player1.getPlayerName())
+portfolio1.addStock(Coke)
+portfolio1.addStock(Pepsi)
 portfolio1.displayPortfolio()
+print("        ")
+print("        ")
+player1.assignPortfolio(portfolio1)
+player1.displayPortfolio()
