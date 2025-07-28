@@ -75,10 +75,14 @@ class Pack:
             print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
             stockNumber += 1
         
+    def getStock(self, selectedStock):
+        stockIndex = selectedStock - 1
+        return (self._stocks[stockIndex])
+
     def getStocksRemaining(self):
         return (self._stocksRemaining)
 
-    
+
 class Portfolio:
     def __init__(self, stocks, totalValue):
         self._stocks = stocks
@@ -96,8 +100,9 @@ class Portfolio:
     
     def displayPortfolio(self):
         stockNumber = 1
+        print(f"Total portfolio value: ${self.getTotalValue()}")
         for stocks in self._stocks:
-            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
+            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
             stockNumber += 1
 
 
@@ -111,8 +116,16 @@ print(Pepsi.getRarity())
 print(Pepsi.setRarity("Legendary"))
 print(Pepsi.getRarity())
 
-pack1 = Pack([Coke, Pepsi], 1, 2)
+Solo = Stock(brandName = "Solo", brandType = "Food & Beverage", rarity = "Rare", value = 4500)
+
+pack1 = Pack([Coke, Pepsi, Solo], 1, 2)
 pack1.displayPackContents()
 pack1.removeStock(Coke)
 print("        ")
 pack1.displayPackContents()
+print(pack1.getStock(0))
+print("        ")
+print("        ")
+
+portfolio1 = Portfolio([pack1.getStock(0), pack1.getStock(1)], [Pepsi.getValue() + Solo.getValue()])
+portfolio1.displayPortfolio()
