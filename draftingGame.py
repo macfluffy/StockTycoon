@@ -130,6 +130,53 @@ class Player:
         self._portfolio.displayPortfolio()
 
 
+class Game:
+    def __init__(self, numberOfPlayers):
+        self._numberOfPlayers = numberOfPlayers
+        self._players = []
+        self._currentRound = 0
+
+    def getCurrentRound(self):
+        return (self._currentRound)
+    
+    def nextRound(self):
+        self._currentRound += 1
+
+    def whatIsYourName(self):
+        return input(f"Please enter your name: ")
+    
+    def addPlayers(self, player):
+        self._players.append(player)
+
+    def thisIsStartingPlayer(self, playerNumber):
+        return True if playerNumber == 0 else False
+    
+    def generateRandomName(self):
+        return "Random Name"
+
+    def createPlayers(self):
+        indexingOffset = 1
+        playerName = ""
+        print("Generating players....")
+        for playerNumber in range(self._numberOfPlayers):
+            playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else self.generateRandomName()
+            player = Player(playerName, (playerNumber + indexingOffset))
+            self.addPlayers(player)
+            print(f"Welcome Player {playerNumber + indexingOffset} {playerName}!")
+
+    def displayPlayers(self):
+        indexingOffset = 1
+        for playerNumber in range(self._numberOfPlayers):
+            print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
+
+    '''def displayRankings(self):
+        playerRankings = []
+        highestValue = 0
+        for player in self._players:
+            highestValuePlayer = player if player.getTotalValue() > highestValue and not in playerRankings
+            playerRankings.append(highestValuePlayer)
+        Get all the players total values and then sort them, double for loop. for each iteration in player rankings, sub for loop the players to find the highest value then return that, repeat...'''
+
 Coke = Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
 print(Coke.getRarity())
 print(Coke.setRarity("Rare"))
@@ -160,3 +207,8 @@ print("        ")
 print("        ")
 player1.assignPortfolio(portfolio1)
 player1.displayPortfolio()
+
+numberOfPlayers = int(input("How many players would you like to add?"))
+game = Game(numberOfPlayers)
+game.createPlayers()
+game.displayPlayers()
