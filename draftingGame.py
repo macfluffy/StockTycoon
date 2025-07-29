@@ -123,6 +123,9 @@ class Player:
     def getPlayerNumber(self):
         return (self._playerNumber)
     
+    def getTotalValue(self):
+        return (self._portfolio.getTotalValue())
+    
     def assignPortfolio(self, portfolio):
         self._portfolio = portfolio
     
@@ -161,6 +164,8 @@ class Game:
         for playerNumber in range(self._numberOfPlayers):
             playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else self.generateRandomName()
             player = Player(playerName, (playerNumber + indexingOffset))
+            portfolio = Portfolio(player)
+            player.assignPortfolio(portfolio)
             self.addPlayers(player)
             print(f"Welcome Player {playerNumber + indexingOffset} {playerName}!")
 
@@ -168,6 +173,10 @@ class Game:
         indexingOffset = 1
         for playerNumber in range(self._numberOfPlayers):
             print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
+
+    def displayPlayerValue(self, playerNumber):
+        return self._players[playerNumber].getTotalValue()
+
 
     '''def displayRankings(self):
         playerRankings = []
@@ -212,3 +221,4 @@ numberOfPlayers = int(input("How many players would you like to add?"))
 game = Game(numberOfPlayers)
 game.createPlayers()
 game.displayPlayers()
+print(game.displayPlayerValue(0))
