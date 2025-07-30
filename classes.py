@@ -1,5 +1,6 @@
 import random
 import randomPlayerNames
+import stockCatalogue
 
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
