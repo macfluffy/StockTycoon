@@ -1,3 +1,6 @@
+import random
+import randomPlayerNames
+
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
         self._brandName = brandName
@@ -107,6 +110,15 @@ class Player:
         self._currentPack = pack
 
     '''def passPack(self, pack, nextPack, nextPlayer):'''
+'''class RandomPlayerNames:
+    def __init__(self):
+        self._playerNames = ["Patrick Bateman", "Paul Allen", "Michael Burry", "Mark Baum", "Ivan Boesky", "Albert Wiggin", "R. Foster Winans", "Martha Stewart", "Gordon Gekko", "Tony Stark", "Bruce Wayne", "Selina Kyle", "Eleanor Sung-Young"]
+
+    def getPlayerName(self, idNumber):
+        return self._playerNames[idNumber]
+    
+    def getRandomlyGeneratedNames(self, namesToGenerate):
+        return random.sample(self._playerNames, namesToGenerate)'''
 
 class Game:
     def __init__(self, numberOfPlayers):
@@ -129,15 +141,16 @@ class Game:
     def thisIsStartingPlayer(self, playerNumber):
         return True if playerNumber == 0 else False
     
-    def generateRandomName(self):
-        return "Random Name"
+    def generateRandomNames(self, namesToGenerate):
+        return random.sample(randomPlayerNames.playerNames, namesToGenerate)
 
     def createPlayers(self):
         indexingOffset = 1
         playerName = ""
+        randomlyGeneratedNames = self.generateRandomNames(self._numberOfPlayers)
         print("Generating players....")
         for playerNumber in range(self._numberOfPlayers):
-            playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else self.generateRandomName()
+            playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
             player = Player(playerName, (playerNumber + indexingOffset))
             portfolio = Portfolio(player)
             player.assignPortfolio(portfolio)
