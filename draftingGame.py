@@ -32,15 +32,29 @@ functions:
 '''
 
 import classes
+import botNames
+import stockCatalogue
 
 def getDefaultPlayerCount():
     defaultNumberOfPlayers = 8
     return defaultNumberOfPlayers
 
+def gameIsOver(gameOver):
+    return True if gameOver else False
+
 if __name__ == '__main__':
     gameOver = False
     newGame = classes.Game(getDefaultPlayerCount())
-    newGame.createPlayers()
+    nameGenerator = botNames.PlayerNames()
+    randomNames = nameGenerator.getAllNames()
+    stockGenerator = stockCatalogue.StockOptions()
+    stockOptions = stockGenerator.getFullCatalogue()
+    stockRarities = stockGenerator.getAllRarities()
+    newGame.createPlayers(randomNames)
     newGame.displayPlayers()
-    '''while not gameOver:'''
+    newPack = newGame.generatePacks(stockOptions, stockRarities)
+    newGame.viewMyPack()
+    for x in range(8):
+        newGame.viewPlayersPack(x)
+    '''while not gameIsOver():'''
     

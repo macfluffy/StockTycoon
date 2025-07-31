@@ -1,6 +1,4 @@
 import random
-import randomPlayerNames
-import stockCatalogue
 
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
@@ -33,6 +31,7 @@ class Stock:
     def changeBrandType(self, newType):
         self._brandType = newType
 
+
 class Pack:
     def __init__(self, stocks, packNumber, stocksRemaining):
         self._stocks = stocks
@@ -42,12 +41,10 @@ class Pack:
     def removeStock(self, stock):
         self._stocks.remove(stock)
         self._stocksRemaining -= 1
-        
-    '''For each stock inside the pack, print out the stocks (brandname, brandtype, rarity and value)
-        When the pack goes down to 1 stock, use a different method as lists are not iterable meaning it does
-        not treat a list with only 1 item in it as a list.'''    
+          
     def displayPackContents(self):
         stockNumber = 1
+        print("Your pack contents:")
         for stocks in self._stocks:
             print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
             stockNumber += 1
@@ -59,14 +56,12 @@ class Pack:
     def getStocksRemaining(self):
         return (self._stocksRemaining)
 
+
 class Portfolio:
     def __init__(self, owner):
         self._owner = owner
         self._stocks = []
         self._totalValue = 0
-
-    '''def firstPickStock(self, stock):
-        self._stocks = stock'''
 
     def addStock(self, stock):
         self._stocks.append(stock)
@@ -84,6 +79,7 @@ class Portfolio:
         for stocks in self._stocks:
             print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
             stockNumber += 1
+
 
 class Player:
     def __init__(self, playerName, playerNumber):
@@ -107,25 +103,22 @@ class Player:
     def displayPortfolio(self):
         self._portfolio.displayPortfolio()
 
+    def viewCurrentPack(self):
+        self._currentPack.displayPackContents()
+
     def setCurrentPack(self, pack):
         self._currentPack = pack
 
     '''def passPack(self, pack, nextPack, nextPlayer):'''
-'''class RandomPlayerNames:
-    def __init__(self):
-        self._playerNames = ["Patrick Bateman", "Paul Allen", "Michael Burry", "Mark Baum", "Ivan Boesky", "Albert Wiggin", "R. Foster Winans", "Martha Stewart", "Gordon Gekko", "Tony Stark", "Bruce Wayne", "Selina Kyle", "Eleanor Sung-Young"]
 
-    def getPlayerName(self, idNumber):
-        return self._playerNames[idNumber]
-    
-    def getRandomlyGeneratedNames(self, namesToGenerate):
-        return random.sample(self._playerNames, namesToGenerate)'''
 
 class Game:
     def __init__(self, numberOfPlayers):
         self._numberOfPlayers = numberOfPlayers
         self._players = []
         self._currentRound = 0
+        self._stockGenerator = []
+        self._startingPlayerID = 0
 
     def getCurrentRound(self):
         return (self._currentRound)
@@ -142,13 +135,13 @@ class Game:
     def thisIsStartingPlayer(self, playerNumber):
         return True if playerNumber == 0 else False
     
-    def generateRandomNames(self, namesToGenerate):
-        return random.sample(randomPlayerNames.playerNames, namesToGenerate)
+    def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
+        return random.sample(generatedNames, numberOfNamesToGenerate)
 
-    def createPlayers(self):
+    def createPlayers(self, generatedNames):
         indexingOffset = 1
         playerName = ""
-        randomlyGeneratedNames = self.generateRandomNames(self._numberOfPlayers)
+        randomlyGeneratedNames = self.generateRandomNames(generatedNames, self._numberOfPlayers)
         print("Generating players....")
         for playerNumber in range(self._numberOfPlayers):
             playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
@@ -167,23 +160,38 @@ class Game:
         indexingOffset = 1
         print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
 
-    def getRandomlyGeneratedStock(self):
-        stockName = "Random Name"
-        stockType = "Random Type"
-        stockRarity = "Random Rarity"
-        stockValue = 0
-        return Stock(brandName = stockName, brandType = stockType, rarity = stockRarity, value = stockValue)
+    def getRandomStock(self, stockCatalogue, stockRarities):
+        randomStock = random.choice(list(stockCatalogue.items()))
+        randomRarity = random.choice(list(stockRarities.items()))
+        stockName = randomStock[0]
+        stockType = randomStock[1]
+        stockRarity = randomRarity[0]
+        stockValue = randomRarity[1]
+        '''print(f"You picked a {stockRarity} {stockName}! This stock is classed as a {stockType} category stock and has a value weighting of {stockValue}!")'''
+        return stockName, stockType, stockRarity, stockValue
 
-    def generatePacks(self):
+    def generatePacks(self, stockCatalogue, stockRarities):
         indexingOffset = 1
         stocksInPack = 15
-        stock = []
+        randomlyGeneratedStocks = []
         for playerNumber in range(self._numberOfPlayers):
             for stockNumber in range(stocksInPack):
-                stock.append(self.getRandomlyGeneratedStock())
+                stockName, stockType, stockRarity, stockValue = self.getRandomStock(stockCatalogue, stockRarities)
+                newStock = Stock(brandName = stockName, brandType = stockType, rarity = stockRarity, value = stockValue)
+                randomlyGeneratedStocks.append(newStock)
+                stockNumber += 1
+                
             thisPackNumber = playerNumber + indexingOffset
-            pack = Pack(packNumber = thisPackNumber, stocksRemaining = stocksInPack)
+            pack = Pack(stocks = randomlyGeneratedStocks, packNumber = thisPackNumber, stocksRemaining = stocksInPack)
+            player = self._players[playerNumber]
             player.setCurrentPack(pack)
+            randomlyGeneratedStocks = []
+
+    def viewMyPack(self):
+        self._players[self._startingPlayerID].viewCurrentPack()
+
+    def viewPlayersPack(self, playerNumber):
+        self._players[playerNumber].viewCurrentPack()
 
     '''def displayRankings(self):
         playerRankings = []
