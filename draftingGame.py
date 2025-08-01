@@ -44,17 +44,24 @@ def gameIsOver(gameOver):
 
 if __name__ == '__main__':
     gameOver = False
+    
+    # Initialise the Game
     newGame = classes.Game(getDefaultPlayerCount())
+
+    # Create the lobby
     nameGenerator = botNames.PlayerNames()
     randomNames = nameGenerator.getAllNames()
+    newGame.createPlayers(randomNames)
+    newGame.displayGameLobby()
+
+    # Generate the first pack
     stockGenerator = stockCatalogue.StockOptions()
     stockOptions = stockGenerator.getFullCatalogue()
     stockRarities = stockGenerator.getAllRarities()
-    newGame.createPlayers(randomNames)
-    newGame.displayPlayers()
     newPack = newGame.generatePacks(stockOptions, stockRarities)
+
     newGame.viewMyPack()
-    for x in range(8):
-        newGame.viewPlayersPack(x)
+    newGame.askUserToPickStock()
+    newGame.displayPlayerPortfolio()
     '''while not gameIsOver():'''
     

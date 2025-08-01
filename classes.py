@@ -38,9 +38,10 @@ class Pack:
         self._packNumber = packNumber
         self._stocksRemaining = stocksRemaining
 
-    def removeStock(self, stock):
-        self._stocks.remove(stock)
+    def takeStock(self, stockNumber):
+        takenStock = self._stocks.pop(stockNumber)
         self._stocksRemaining -= 1
+        return takenStock
           
     def displayPackContents(self):
         stockNumber = 1
@@ -108,6 +109,12 @@ class Player:
 
     def setCurrentPack(self, pack):
         self._currentPack = pack
+    
+    def takeStockFromPack(self, stockNumber):
+        indexingOffset = 1
+        stockTaken = self._currentPack.takeStock(stockNumber - indexingOffset)
+        self._portfolio.addStock(stockTaken)
+        print(f"You've added {stockTaken.getBrandName()} to your portfolio!")
 
     '''def passPack(self, pack, nextPack, nextPlayer):'''
 
@@ -133,7 +140,7 @@ class Game:
         self._players.append(player)
 
     def thisIsStartingPlayer(self, playerNumber):
-        return True if playerNumber == 0 else False
+        return True if playerNumber == self._startingPlayerID else False
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -150,11 +157,14 @@ class Game:
             player.assignPortfolio(portfolio)
             self.addPlayers(player)
 
-    def displayPlayers(self):
+    def displayGameLobby(self):
         indexingOffset = 1
-        print(f"Player Lobby:")
+        print(f"Game Lobby:")
         for playerNumber in range(self._numberOfPlayers):
             print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
+
+    def displayPlayerPortfolio(self):
+        self._players[self._startingPlayerID].displayPortfolio()
 
     def displayPlayerValue(self, playerNumber):
         indexingOffset = 1
@@ -167,7 +177,6 @@ class Game:
         stockType = randomStock[1]
         stockRarity = randomRarity[0]
         stockValue = randomRarity[1]
-        '''print(f"You picked a {stockRarity} {stockName}! This stock is classed as a {stockType} category stock and has a value weighting of {stockValue}!")'''
         return stockName, stockType, stockRarity, stockValue
 
     def generatePacks(self, stockCatalogue, stockRarities):
@@ -192,6 +201,15 @@ class Game:
 
     def viewPlayersPack(self, playerNumber):
         self._players[playerNumber].viewCurrentPack()
+
+    def pickStock(self, playerNumber, stockNumber):
+        self._players[playerNumber].takeStockFromPack(stockNumber)
+        '''Try to pick a stock, if the'''
+
+    def askUserToPickStock(self):
+        userEntry = input("Which stock would you like to select? (Enter a number)")
+        self.pickStock(self._startingPlayerID, int(userEntry))
+        '''Try to pass an int, if its not an int repeat'''
 
     '''def displayRankings(self):
         playerRankings = []

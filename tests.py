@@ -1,3 +1,5 @@
+import draftingGame
+
 Coke = classes.Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
 print(Coke.getRarity())
 print(Coke.setRarity("Rare"))
@@ -34,3 +36,6 @@ game = classes.Game(numberOfPlayers)
 game.createPlayers()
 game.displayPlayers()
 print(game.displayPlayerValue(0))
+
+ '''for x in range(8):
+        newGame.viewPlayersPack(x)'''
