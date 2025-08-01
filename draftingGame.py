@@ -63,5 +63,7 @@ if __name__ == '__main__':
     newGame.viewMyPack()
     newGame.askUserToPickStock()
     newGame.displayPlayerPortfolio()
+    newGame.passPacks()
+
     '''while not gameIsOver():'''
     

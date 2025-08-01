@@ -39,3 +39,9 @@ print(game.displayPlayerValue(0))
 
  '''for x in range(8):
         newGame.viewPlayersPack(x)'''
+
+'''    newGame.nextRound()
+    newGame.viewMyPack()
+    newGame.askUserToPickStock()
+    newGame.displayPlayerPortfolio()
+    newGame.passPacks()'''

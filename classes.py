@@ -98,6 +98,9 @@ class Player:
     def getTotalValue(self):
         return (self._portfolio.getTotalValue())
     
+    def getCurrentPack(self):
+        return (self._currentPack)
+    
     def assignPortfolio(self, portfolio):
         self._portfolio = portfolio
     
@@ -116,14 +119,12 @@ class Player:
         self._portfolio.addStock(stockTaken)
         print(f"You've added {stockTaken.getBrandName()} to your portfolio!")
 
-    '''def passPack(self, pack, nextPack, nextPlayer):'''
-
 
 class Game:
     def __init__(self, numberOfPlayers):
         self._numberOfPlayers = numberOfPlayers
         self._players = []
-        self._currentRound = 0
+        self._currentRound = 1
         self._stockGenerator = []
         self._startingPlayerID = 0
 
@@ -141,6 +142,11 @@ class Game:
 
     def thisIsStartingPlayer(self, playerNumber):
         return True if playerNumber == self._startingPlayerID else False
+    
+    def thisIsLastPlayer(self, playerNumber):
+        indexingOffset = 1
+        playerNumber += indexingOffset
+        return True if playerNumber == self._numberOfPlayers else False
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -210,6 +216,40 @@ class Game:
         userEntry = input("Which stock would you like to select? (Enter a number)")
         self.pickStock(self._startingPlayerID, int(userEntry))
         '''Try to pass an int, if its not an int repeat'''
+   
+    def passingForwards(self):
+        return True if not self._currentRound == 2 else False
+
+    def passPacks(self):
+        indexingOffset = 1
+        currentPacks = []
+        for players in self._players:
+            currentPacks.append(players.getCurrentPack())
+        
+        if self.passingForwards():
+            for playerNumber in range(self._numberOfPlayers): 
+                if self.thisIsStartingPlayer(playerNumber):
+                    lastPlayer = self._numberOfPlayers - indexingOffset
+                    self._players[playerNumber].setCurrentPack(currentPacks[lastPlayer]) 
+                else:
+                    previousPlayer = playerNumber - indexingOffset
+                    self._players[playerNumber].setCurrentPack(currentPacks[previousPlayer])
+                
+                print(f"Pack {playerNumber}")
+                self._players[playerNumber].viewCurrentPack()
+        else:
+            for playerNumber in range(self._numberOfPlayers):
+                if self.thisIsLastPlayer(playerNumber):
+                    self._players[playerNumber].setCurrentPack(currentPacks[self._startingPlayerID]) 
+                else:
+                    nextPlayer = playerNumber + indexingOffset
+                    self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer])
+                
+                print(f"Pack {playerNumber}")
+                self._players[playerNumber].viewCurrentPack()
+
+    def nextRound(self):
+        self._currentRound += 1
 
     '''def displayRankings(self):
         playerRankings = []
