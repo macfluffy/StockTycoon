@@ -38,6 +38,16 @@ class Pack:
         self._packNumber = packNumber
         self._stocksRemaining = stocksRemaining
 
+    def getStock(self, selectedStock):
+        stockIndex = selectedStock - 1
+        return (self._stocks[stockIndex])
+
+    def getStocksRemaining(self):
+        return (self._stocksRemaining)
+    
+    def isPackEmpty(self):
+        return True if self._stocksRemaining == 0 else False
+    
     def takeStock(self, stockNumber):
         takenStock = self._stocks.pop(stockNumber)
         self._stocksRemaining -= 1
@@ -49,13 +59,6 @@ class Pack:
         for stocks in self._stocks:
             print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
             stockNumber += 1
-        
-    def getStock(self, selectedStock):
-        stockIndex = selectedStock - 1
-        return (self._stocks[stockIndex])
-
-    def getStocksRemaining(self):
-        return (self._stocksRemaining)
 
 
 class Portfolio:
@@ -73,6 +76,9 @@ class Portfolio:
 
     def getTotalValue(self):
         return (self._totalValue)
+    
+    def getMostRecentPick(self):
+        return self._stocks[-1].getBrandName()
     
     def displayPortfolio(self):
         stockNumber = 1
@@ -101,6 +107,12 @@ class Player:
     def getCurrentPack(self):
         return (self._currentPack)
     
+    def getMostRecentPick(self):
+        return self._portfolio.getMostRecentPick()
+    
+    def isPackEmpty(self):
+        return True if self._currentPack.isPackEmpty() else False
+    
     def assignPortfolio(self, portfolio):
         self._portfolio = portfolio
     
@@ -112,12 +124,11 @@ class Player:
 
     def setCurrentPack(self, pack):
         self._currentPack = pack
-    
+
     def takeStockFromPack(self, stockNumber):
         indexingOffset = 1
         stockTaken = self._currentPack.takeStock(stockNumber - indexingOffset)
         self._portfolio.addStock(stockTaken)
-        print(f"You've added {stockTaken.getBrandName()} to your portfolio!")
 
 
 class Game:
@@ -131,15 +142,9 @@ class Game:
     def getCurrentRound(self):
         return (self._currentRound)
     
-    def nextRound(self):
-        self._currentRound += 1
-
-    def whatIsYourName(self):
-        return input(f"Please enter your name: ")
+    def isPackEmpty(self):
+        return True if self._players[self._startingPlayerID].isPackEmpty() else False
     
-    def addPlayers(self, player):
-        self._players.append(player)
-
     def thisIsStartingPlayer(self, playerNumber):
         return True if playerNumber == self._startingPlayerID else False
     
@@ -147,6 +152,21 @@ class Game:
         indexingOffset = 1
         playerNumber += indexingOffset
         return True if playerNumber == self._numberOfPlayers else False
+    
+    def passingForwards(self):
+        return True if not self._currentRound == 2 else False
+    
+    def gameIsOver(self):
+        return True if self._currentRound == 3 and self.isPackEmpty() else False
+    
+    def addPlayers(self, player):
+        self._players.append(player)   
+
+    def nextRound(self):
+        self._currentRound += 1
+
+    def whatIsYourName(self):
+        return input(f"Please enter your name: ")
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -176,6 +196,12 @@ class Game:
         indexingOffset = 1
         print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
 
+    def viewMyPack(self):
+        self._players[self._startingPlayerID].viewCurrentPack()
+
+    def viewPlayersPack(self, playerNumber):
+        self._players[playerNumber].viewCurrentPack()
+
     def getRandomStock(self, stockCatalogue, stockRarities):
         randomStock = random.choice(list(stockCatalogue.items()))
         randomRarity = random.choice(list(stockRarities.items()))
@@ -202,12 +228,6 @@ class Game:
             player.setCurrentPack(pack)
             randomlyGeneratedStocks = []
 
-    def viewMyPack(self):
-        self._players[self._startingPlayerID].viewCurrentPack()
-
-    def viewPlayersPack(self, playerNumber):
-        self._players[playerNumber].viewCurrentPack()
-
     def takeStockFromPack(self, playerNumber, stockNumber):
         self._players[playerNumber].takeStockFromPack(stockNumber)
         '''Try to pick a stock, if the'''
@@ -215,6 +235,7 @@ class Game:
     def askUserToPickStock(self):
         userEntry = input("Which stock would you like to select? (Enter a number)")
         self.takeStockFromPack(self._startingPlayerID, int(userEntry))
+        print(f"You have added {self._players[self._startingPlayerID].getMostRecentPick()} to your portfolio")
         '''Try to pass an int, if its not an int repeat'''
     
     def draftStock(self):
@@ -227,9 +248,6 @@ class Game:
                 stocksRemainingInPack = player.getCurrentPack().getStocksRemaining()
                 randomStock = random.randrange(stocksRemainingInPack)
                 self.takeStockFromPack(playerNumber, randomStock)
-
-    def passingForwards(self):
-        return True if not self._currentRound == 2 else False
 
     def passPacks(self):
         indexingOffset = 1
@@ -244,26 +262,14 @@ class Game:
                     self._players[playerNumber].setCurrentPack(currentPacks[lastPlayer]) 
                 else:
                     previousPlayer = playerNumber - indexingOffset
-                    self._players[playerNumber].setCurrentPack(currentPacks[previousPlayer])
-                
-                print(f"Pack {playerNumber}")
-                self._players[playerNumber].viewCurrentPack()
+                    self._players[playerNumber].setCurrentPack(currentPacks[previousPlayer])             
         else:
             for playerNumber in range(self._numberOfPlayers):
                 if self.thisIsLastPlayer(playerNumber):
                     self._players[playerNumber].setCurrentPack(currentPacks[self._startingPlayerID]) 
                 else:
                     nextPlayer = playerNumber + indexingOffset
-                    self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer])
-                
-                print(f"Pack {playerNumber}")
-                self._players[playerNumber].viewCurrentPack()
-
-    def isPackEmpty(self):
-        return True if self._players[self._startingPlayerID].getCurrentPack().getStocksRemaining() == 0 else False
-
-    def nextRound(self):
-        self._currentRound += 1
+                    self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer]) 
 
     '''def displayRankings(self):
         playerRankings = []
