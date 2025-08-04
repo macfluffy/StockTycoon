@@ -61,7 +61,7 @@ if __name__ == '__main__':
     newPack = newGame.generatePacks(stockOptions, stockRarities)
 
     newGame.viewMyPack()
-    newGame.askUserToPickStock()
+    newGame.draftStock()
     newGame.displayPlayerPortfolio()
     newGame.passPacks()
 

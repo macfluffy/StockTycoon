@@ -208,15 +208,26 @@ class Game:
     def viewPlayersPack(self, playerNumber):
         self._players[playerNumber].viewCurrentPack()
 
-    def pickStock(self, playerNumber, stockNumber):
+    def takeStockFromPack(self, playerNumber, stockNumber):
         self._players[playerNumber].takeStockFromPack(stockNumber)
         '''Try to pick a stock, if the'''
 
     def askUserToPickStock(self):
         userEntry = input("Which stock would you like to select? (Enter a number)")
-        self.pickStock(self._startingPlayerID, int(userEntry))
+        self.takeStockFromPack(self._startingPlayerID, int(userEntry))
         '''Try to pass an int, if its not an int repeat'''
-   
+    
+    def draftStock(self):
+        indexingOffset = 1
+        for player in self._players:
+            playerNumber = player.getPlayerNumber() - indexingOffset
+            if self.thisIsStartingPlayer(playerNumber):
+                self.askUserToPickStock()
+            else:
+                stocksRemainingInPack = player.getCurrentPack().getStocksRemaining()
+                randomStock = random.randrange(stocksRemainingInPack)
+                self.takeStockFromPack(playerNumber, randomStock)
+
     def passingForwards(self):
         return True if not self._currentRound == 2 else False
 
