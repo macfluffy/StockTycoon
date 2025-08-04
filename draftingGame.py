@@ -59,11 +59,15 @@ if __name__ == '__main__':
     stockOptions = stockGenerator.getFullCatalogue()
     stockRarities = stockGenerator.getAllRarities()
     newPack = newGame.generatePacks(stockOptions, stockRarities)
+    packsEmpty = newGame.isPackEmpty()
 
-    newGame.viewMyPack()
-    newGame.draftStock()
-    newGame.displayPlayerPortfolio()
-    newGame.passPacks()
+    while not packsEmpty:
+        newGame.viewMyPack()
+        newGame.draftStock()
+        newGame.displayPlayerPortfolio()
+        newGame.passPacks()
+        packsEmpty = newGame.isPackEmpty()
+
 
     '''while not gameIsOver():'''
     

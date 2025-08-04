@@ -259,6 +259,9 @@ class Game:
                 print(f"Pack {playerNumber}")
                 self._players[playerNumber].viewCurrentPack()
 
+    def isPackEmpty(self):
+        return True if self._players[self._startingPlayerID].getCurrentPack().getStocksRemaining() == 0 else False
+
     def nextRound(self):
         self._currentRound += 1
 
