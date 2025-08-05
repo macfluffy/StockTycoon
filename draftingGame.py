@@ -6,9 +6,14 @@ def getDefaultPlayerCount():
     defaultNumberOfPlayers = 8
     return defaultNumberOfPlayers
 
+'''def wantToPlayAgain(playAgain):
+    return True if playAgain else False'''
+
 if __name__ == '__main__':
     gameOver = False
+    '''playToken = True
     
+    while playToken:'''
     # Initialise the Game
     newGame = classes.Game(getDefaultPlayerCount())
 
@@ -40,3 +45,7 @@ if __name__ == '__main__':
                 gameOver = newGame.gameIsOver()
                 newGame.nextRound()
                 currentRound = newGame.getCurrentRound()
+
+    newGame.displayRankings()
+    '''playToken = newGame.playAgain()
+    continue if wantToPlayAgain() else break'''

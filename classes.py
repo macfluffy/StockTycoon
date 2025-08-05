@@ -142,6 +142,15 @@ class Game:
     def getCurrentRound(self):
         return (self._currentRound)
     
+    def getRandomStock(self, stockCatalogue, stockRarities):
+        randomStock = random.choice(list(stockCatalogue.items()))
+        randomRarity = random.choice(list(stockRarities.items()))
+        stockName = randomStock[0]
+        stockType = randomStock[1]
+        stockRarity = randomRarity[0]
+        stockValue = randomRarity[1]
+        return stockName, stockType, stockRarity, stockValue
+    
     def isPackEmpty(self):
         return True if self._players[self._startingPlayerID].isPackEmpty() else False
     
@@ -167,21 +176,6 @@ class Game:
 
     def whatIsYourName(self):
         return input(f"Please enter your name: ")
-    
-    def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
-        return random.sample(generatedNames, numberOfNamesToGenerate)
-
-    def createPlayers(self, generatedNames):
-        indexingOffset = 1
-        playerName = ""
-        randomlyGeneratedNames = self.generateRandomNames(generatedNames, self._numberOfPlayers)
-        print("Generating players....")
-        for playerNumber in range(self._numberOfPlayers):
-            playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
-            player = Player(playerName, (playerNumber + indexingOffset))
-            portfolio = Portfolio(player)
-            player.assignPortfolio(portfolio)
-            self.addPlayers(player)
 
     def displayGameLobby(self):
         indexingOffset = 1
@@ -199,17 +193,37 @@ class Game:
     def viewMyPack(self):
         self._players[self._startingPlayerID].viewCurrentPack()
 
-    def viewPlayersPack(self, playerNumber):
+    def displayPlayerPack(self, playerNumber):
         self._players[playerNumber].viewCurrentPack()
 
-    def getRandomStock(self, stockCatalogue, stockRarities):
-        randomStock = random.choice(list(stockCatalogue.items()))
-        randomRarity = random.choice(list(stockRarities.items()))
-        stockName = randomStock[0]
-        stockType = randomStock[1]
-        stockRarity = randomRarity[0]
-        stockValue = randomRarity[1]
-        return stockName, stockType, stockRarity, stockValue
+    def displayRankings(self):
+        scoreboard = []
+        for player in self._players:
+            playerScores = (player.getPlayerName(), player.getTotalValue())
+            scoreboard.append(playerScores)
+
+        scoreboard = sorted(scoreboard, key = lambda score: score[1], reverse = True)
+        indexingOffset = 1
+        print(f"Scoreboard")
+        print(f"Rank | Player Name | Portfolio Value ($)")
+        for playerNumber in range(self._numberOfPlayers):
+            rank = playerNumber + indexingOffset
+            print(f"{rank}. {scoreboard[playerNumber]}")   
+    
+    def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
+        return random.sample(generatedNames, numberOfNamesToGenerate)
+
+    def createPlayers(self, generatedNames):
+        indexingOffset = 1
+        playerName = ""
+        randomlyGeneratedNames = self.generateRandomNames(generatedNames, self._numberOfPlayers)
+        print("Generating players....")
+        for playerNumber in range(self._numberOfPlayers):
+            playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
+            player = Player(playerName, (playerNumber + indexingOffset))
+            portfolio = Portfolio(player)
+            player.assignPortfolio(portfolio)
+            self.addPlayers(player)
 
     def generatePacks(self, stockCatalogue, stockRarities):
         indexingOffset = 1
@@ -271,10 +285,11 @@ class Game:
                     nextPlayer = playerNumber + indexingOffset
                     self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer]) 
 
-    '''def displayRankings(self):
-        playerRankings = []
-        highestValue = 0
-        for player in self._players:
-            highestValuePlayer = player if player.getTotalValue() > highestValue and not in playerRankings
-            playerRankings.append(highestValuePlayer)
-        Get all the players total values and then sort them, double for loop. for each iteration in player rankings, sub for loop the players to find the highest value then return that, repeat...'''
+    '''def playAgain(self):
+        playToken = input("Would you like to play again? (y/n?)").lower()
+        if playToken == "y":
+            return True
+        elif playToken == "n":
+            return False
+        else:
+            print("Please enter y or n.")'''
