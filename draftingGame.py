@@ -6,46 +6,47 @@ def getDefaultPlayerCount():
     defaultNumberOfPlayers = 8
     return defaultNumberOfPlayers
 
-'''def wantToPlayAgain(playAgain):
-    return True if playAgain else False'''
+def wantToPlayAgain(playAgain):
+    return True if playAgain else False
 
 if __name__ == '__main__':
     gameOver = False
-    '''playToken = True
+    playToken = True
     
-    while playToken:'''
-    # Initialise the Game
-    newGame = classes.Game(getDefaultPlayerCount())
+    while playToken:
+        # Initialise the Game
+        newGame = classes.Game(getDefaultPlayerCount())
 
-    # Create the lobby
-    nameGenerator = botNames.PlayerNames()
-    randomNames = nameGenerator.getAllNames()
-    newGame.createPlayers(randomNames)
-    newGame.displayGameLobby()
+        # Create the lobby
+        nameGenerator = botNames.PlayerNames()
+        randomNames = nameGenerator.getAllNames()
+        newGame.createPlayers(randomNames)
+        newGame.displayGameLobby()
 
-    # Core game loop
-    while not gameOver:
-        # Generate the packs for the round
-        stockGenerator = stockCatalogue.StockOptions()
-        stockOptions = stockGenerator.getFullCatalogue()
-        stockRarities = stockGenerator.getAllRarities()
-        newPack = newGame.generatePacks(stockOptions, stockRarities)
-        currentRound = newGame.getCurrentRound()
-        packsEmpty = newGame.isPackEmpty()
-        print(f"Round: {currentRound}")
-
-        # Draft packs and pass it on until there are no more picks
-        while not packsEmpty:
-            newGame.viewMyPack()
-            newGame.draftStock()
-            newGame.displayPlayerPortfolio()
-            newGame.passPacks()
+        # Core game loop
+        while not gameOver:
+            # Generate the packs for the round
+            stockGenerator = stockCatalogue.StockOptions()
+            stockOptions = stockGenerator.getFullCatalogue()
+            stockRarities = stockGenerator.getAllRarities()
+            newPack = newGame.generatePacks(stockOptions, stockRarities)
+            currentRound = newGame.getCurrentRound()
             packsEmpty = newGame.isPackEmpty()
-            if packsEmpty:
-                gameOver = newGame.gameIsOver()
-                newGame.nextRound()
-                currentRound = newGame.getCurrentRound()
+            print(f"Round: {currentRound}")
 
-    newGame.displayRankings()
-    '''playToken = newGame.playAgain()
-    continue if wantToPlayAgain() else break'''
+            # Draft packs and pass it on until there are no more picks
+            while not packsEmpty:
+                newGame.viewMyPack()
+                newGame.draftStock()
+                newGame.displayPlayerPortfolio()
+                newGame.passPacks()
+                packsEmpty = newGame.isPackEmpty()
+                if packsEmpty:
+                    gameOver = newGame.gameIsOver()
+                    newGame.nextRound()
+                    currentRound = newGame.getCurrentRound()
+
+        newGame.displayRankings()
+        playToken = newGame.playAgain()
+        if wantToPlayAgain(playToken):
+            gameOver = False

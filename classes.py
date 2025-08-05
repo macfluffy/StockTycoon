@@ -285,11 +285,11 @@ class Game:
                     nextPlayer = playerNumber + indexingOffset
                     self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer]) 
 
-    '''def playAgain(self):
+    def playAgain(self):
         playToken = input("Would you like to play again? (y/n?)").lower()
         if playToken == "y":
             return True
         elif playToken == "n":
             return False
         else:
-            print("Please enter y or n.")'''
+            print("Please enter y or n.")
