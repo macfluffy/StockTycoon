@@ -244,7 +244,6 @@ class Game:
 
     def takeStockFromPack(self, playerNumber, stockNumber):
         self._players[playerNumber].takeStockFromPack(stockNumber)
-        '''Try to pick a stock, if the'''
 
     def askUserToPickStock(self):
         stockWasPicked = False
@@ -295,10 +294,14 @@ class Game:
                     self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer]) 
 
     def playAgain(self):
-        playToken = input("Would you like to play again? (y/n?)").lower()
-        if playToken == "y":
-            return True
-        elif playToken == "n":
-            return False
-        else:
-            print("Please enter y or n.")
+        validChoiceMade = False
+        while not validChoiceMade:
+            playToken = input("Would you like to play again? (y/n?)").lower()
+            if playToken == "y" or playToken == "yes":
+                validChoiceMade = True
+                return True
+            elif playToken == "n" or playToken == "no":
+                validChoiceMade = True
+                return False
+            else:
+                print("Please enter y or n.")
