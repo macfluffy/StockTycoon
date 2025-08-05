@@ -247,10 +247,19 @@ class Game:
         '''Try to pick a stock, if the'''
 
     def askUserToPickStock(self):
-        userEntry = input("Which stock would you like to select? (Enter a number)")
-        self.takeStockFromPack(self._startingPlayerID, int(userEntry))
-        print(f"You have added {self._players[self._startingPlayerID].getMostRecentPick()} to your portfolio")
-        '''Try to pass an int, if its not an int repeat'''
+        stockWasPicked = False
+        while not stockWasPicked:
+            userEntry = input("Which stock would you like to select? (Enter a number)")
+            try:
+                self.takeStockFromPack(self._startingPlayerID, int(userEntry))
+                print(f"You have added {self._players[self._startingPlayerID].getMostRecentPick()} to your portfolio")
+                stockWasPicked = True
+            except IndexError:
+                print(f"Index error: That is not a valid option!")
+            except ValueError:
+                print(f"Value error: Please enter a number.")
+            except:
+                print(f"Please enter a number to select the correct option.")
     
     def draftStock(self):
         indexingOffset = 1

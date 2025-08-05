@@ -46,7 +46,10 @@ if __name__ == '__main__':
                     newGame.nextRound()
                     currentRound = newGame.getCurrentRound()
 
+        # Show the scoreboard
         newGame.displayRankings()
+
+        # Would you like to play again?
         playToken = newGame.playAgain()
         if wantToPlayAgain(playToken):
             gameOver = False
