@@ -1,6 +1,6 @@
 import classes
-import botNames
-import stockCatalogue
+from bots import botNames
+from sets import stockCatalogue
 
 def getDefaultPlayerCount():
     defaultNumberOfPlayers = 8
