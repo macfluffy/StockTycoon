@@ -183,6 +183,9 @@ class Game:
         for playerNumber in range(self._numberOfPlayers):
             print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
 
+    def displayCurrentRound(self):
+        print(f"Round {self._currentRound}:")
+    
     def displayPlayerPortfolio(self):
         self._players[self._startingPlayerID].displayPortfolio()
 

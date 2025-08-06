@@ -30,9 +30,10 @@ if __name__ == '__main__':
             stockOptions = stockGenerator.getFullCatalogue()
             stockRarities = stockGenerator.getAllRarities()
             newPack = newGame.generatePacks(stockOptions, stockRarities)
-            currentRound = newGame.getCurrentRound()
             packsEmpty = newGame.isPackEmpty()
-            print(f"Round: {currentRound}")
+            
+            # Show the current round number
+            newGame.displayCurrentRound()
 
             # Draft packs and pass it on until there are no more picks
             while not packsEmpty:
@@ -44,7 +45,6 @@ if __name__ == '__main__':
                 if packsEmpty:
                     gameOver = newGame.gameIsOver()
                     newGame.nextRound()
-                    currentRound = newGame.getCurrentRound()
 
         # Show the scoreboard
         newGame.displayRankings()
