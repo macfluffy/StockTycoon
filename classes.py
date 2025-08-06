@@ -151,11 +151,14 @@ class Game:
         stockValue = randomRarity[1]
         return stockName, stockType, stockRarity, stockValue
     
+    def getStartingPlayerID(self):
+        return (self._startingPlayerID)
+    
     def isPackEmpty(self):
-        return True if self._players[self._startingPlayerID].isPackEmpty() else False
+        return True if self._players[self.getStartingPlayerID()].isPackEmpty() else False
     
     def thisIsStartingPlayer(self, playerNumber):
-        return True if playerNumber == self._startingPlayerID else False
+        return True if playerNumber == self.getStartingPlayerID() else False
     
     def thisIsLastPlayer(self, playerNumber):
         indexingOffset = 1
@@ -163,10 +166,10 @@ class Game:
         return True if playerNumber == self._numberOfPlayers else False
     
     def passingForwards(self):
-        return True if not self._currentRound == 2 else False
+        return True if not self.getCurrentRound() == 2 else False
     
     def gameIsOver(self):
-        return True if self._currentRound == 3 and self.isPackEmpty() else False
+        return True if self.getCurrentRound() == 3 and self.isPackEmpty() else False
     
     def addPlayers(self, player):
         self._players.append(player)   
@@ -184,17 +187,17 @@ class Game:
             print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
 
     def displayCurrentRound(self):
-        print(f"Round {self._currentRound}:")
+        print(f"Round {self.getCurrentRound()}:")
     
     def displayPlayerPortfolio(self):
-        self._players[self._startingPlayerID].displayPortfolio()
+        self._players[self.getStartingPlayerID()].displayPortfolio()
 
     def displayPlayerValue(self, playerNumber):
         indexingOffset = 1
         print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
 
     def viewMyPack(self):
-        self._players[self._startingPlayerID].viewCurrentPack()
+        self._players[self.getStartingPlayerID()].viewCurrentPack()
 
     def displayPlayerPack(self, playerNumber):
         self._players[playerNumber].viewCurrentPack()
@@ -253,8 +256,8 @@ class Game:
         while not stockWasPicked:
             userEntry = input("Which stock would you like to select? (Enter a number)")
             try:
-                self.takeStockFromPack(self._startingPlayerID, int(userEntry))
-                print(f"You have added {self._players[self._startingPlayerID].getMostRecentPick()} to your portfolio")
+                self.takeStockFromPack(self.getStartingPlayerID(), int(userEntry))
+                print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
                 stockWasPicked = True
             except IndexError:
                 print(f"Index error: That is not a valid option!")
@@ -291,7 +294,7 @@ class Game:
         else:
             for playerNumber in range(self._numberOfPlayers):
                 if self.thisIsLastPlayer(playerNumber):
-                    self._players[playerNumber].setCurrentPack(currentPacks[self._startingPlayerID]) 
+                    self._players[playerNumber].setCurrentPack(currentPacks[self.getStartingPlayerID()]) 
                 else:
                     nextPlayer = playerNumber + indexingOffset
                     self._players[playerNumber].setCurrentPack(currentPacks[nextPlayer]) 
