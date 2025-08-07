@@ -47,7 +47,7 @@ class Pack:
         return (self._stocksRemaining)
     
     def isPackEmpty(self):
-        return True if self._stocksRemaining == 0 else False
+        return True if self.getStocksRemaining() == 0 else False
     
     def takeStock(self, stockNumber):
         takenStock = self._stocks.pop(stockNumber)
