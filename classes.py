@@ -1,5 +1,7 @@
 import random
 from rich.console import Console
+from rich.table import Table
+from rich.theme import Theme
 
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
@@ -56,10 +58,19 @@ class Pack:
           
     def displayPackContents(self, console):
         stockNumber = 1
-        console.print("Your pack contents:")
+        tableTitle = "Your pack contents:"
+        table = Table(title = tableTitle)
+        table.add_column("Stock Number", justify = "center")
+        table.add_column("Brand Name", justify = "center")
+        table.add_column("Brand Type", justify = "center")
+        table.add_column("Rarity", justify = "center")
+        table.add_column("Value", justify = "center")
         for stocks in self._stocks:
-            console.print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
+            rowColour = stocks.getRarity().lower()
+            table.add_row(f"[{rowColour}]{stockNumber}[/]", f"[{rowColour}]{stocks.getBrandName()}[/]", f"[{rowColour}]{stocks.getBrandType()}[/]", f"[{rowColour}]{stocks.getRarity()}[/]", f"[{rowColour}]{stocks.getValue()}[/]")
             stockNumber += 1
+
+        console.print(table)
 
 
 class Portfolio:
@@ -83,9 +94,10 @@ class Portfolio:
     
     def displayPortfolio(self, console):
         stockNumber = 1
-        console.print(f"Total portfolio value: ${self.getTotalValue()}")
+        console.print(f"Total portfolio value: [value]${self.getTotalValue()}[/]")
         for stocks in self._stocks:
-            console.print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
+            lineColour = stocks.getRarity().lower()
+            console.print(f"[{lineColour}]{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}[/]")
             stockNumber += 1
 
 
@@ -139,8 +151,15 @@ class Game:
         self._currentRound = 1
         self._stockGenerator = []
         self._startingPlayerID = 0
-        self._console = Console()
-        '''Create a console() class inside the game, create the themes for the different rarities Legendary has golden background with black text, epic has purple background with white text, uncommon has green background with black text, common has gray background with white text'''
+        self._colourTheme = Theme({
+            "common": "white on bright_black",
+            "uncommon": "bright_magenta on green3",
+            "rare": "orange_red1 on deep_sky_blue1",
+            "epic": "green4 on dark_violet",
+            "legendary": "dark_red on orange1",
+            "value": "gold1"
+        })
+        self._console = Console(theme = self._colourTheme)
 
     def getCurrentRound(self):
         return (self._currentRound)
