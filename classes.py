@@ -157,7 +157,8 @@ class Game:
             "rare": "orange_red1 on deep_sky_blue1",
             "epic": "green4 on dark_violet",
             "legendary": "dark_red on orange1",
-            "value": "gold1"
+            "value": "gold1",
+            "warning": "red"
         })
         self._console = Console(theme = self._colourTheme)
 
@@ -282,11 +283,11 @@ class Game:
                 self._console.print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
                 stockWasPicked = True
             except IndexError:
-                self._console.print(f"Index error: That is not a valid option!")
+                self._console.print(f":warning: [warning][bold]Index error:[/] That is not a valid option![/]")
             except ValueError:
-                self._console.print(f"Value error: Please enter a number.")
+                self._console.print(f":warning: [warning][bold]Value error:[/] Please enter a number![/]")
             except:
-                self._console.print(f"Please enter a number to select the correct option.")
+                self._console.print(f":warning: [warning]Please enter a number to select the correct option.[/]")
     
     def draftStock(self):
         indexingOffset = 1
