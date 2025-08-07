@@ -16,6 +16,7 @@ if __name__ == '__main__':
     while playToken:
         # Initialise the Game
         newGame = classes.Game(getDefaultPlayerCount())
+        newGame.displayGameBanner()
 
         # Create the lobby
         nameGenerator = botNames.PlayerNames()

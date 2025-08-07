@@ -2,6 +2,7 @@ import random
 from rich.console import Console
 from rich.table import Table
 from rich.theme import Theme
+import pyfiglet
 
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
@@ -202,6 +203,11 @@ class Game:
 
     def whatIsYourName(self):
         return input(f"Please enter your name: ")
+    
+    def displayGameBanner(self):
+        gameTitle = "Stock Tycoon"
+        gameBanner = pyfiglet.figlet_format(gameTitle, font = "epic")
+        self._console.print(f"[value]{gameBanner}[/]")
 
     def displayGameLobby(self):
         indexingOffset = 1
