@@ -28,7 +28,8 @@ functions:
  initialise()
  Ask for the players name?
  They will be given a seat number
-
+import sys
+print(sys.path)
 '''
 
 import draftingGame

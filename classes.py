@@ -1,4 +1,5 @@
 import random
+from rich.console import Console
 
 class Stock:
     def __init__(self, brandName, brandType, rarity, value):
@@ -53,11 +54,11 @@ class Pack:
         self._stocksRemaining -= 1
         return takenStock
           
-    def displayPackContents(self):
+    def displayPackContents(self, console):
         stockNumber = 1
-        print("Your pack contents:")
+        console.print("Your pack contents:")
         for stocks in self._stocks:
-            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
+            console.print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | {stocks.getValue()}")
             stockNumber += 1
 
 
@@ -80,11 +81,11 @@ class Portfolio:
     def getMostRecentPick(self):
         return self._stocks[-1].getBrandName()
     
-    def displayPortfolio(self):
+    def displayPortfolio(self, console):
         stockNumber = 1
-        print(f"Total portfolio value: ${self.getTotalValue()}")
+        console.print(f"Total portfolio value: ${self.getTotalValue()}")
         for stocks in self._stocks:
-            print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
+            console.print(f"{stockNumber}.  {stocks.getBrandName()} | {stocks.getBrandType()} | {stocks.getRarity()} | ${stocks.getValue()}")
             stockNumber += 1
 
 
@@ -116,11 +117,11 @@ class Player:
     def assignPortfolio(self, portfolio):
         self._portfolio = portfolio
     
-    def displayPortfolio(self):
-        self._portfolio.displayPortfolio()
+    def displayPortfolio(self, console):
+        self._portfolio.displayPortfolio(console)
 
-    def viewCurrentPack(self):
-        self._currentPack.displayPackContents()
+    def viewCurrentPack(self, console):
+        self._currentPack.displayPackContents(console)
 
     def setCurrentPack(self, pack):
         self._currentPack = pack
@@ -138,6 +139,8 @@ class Game:
         self._currentRound = 1
         self._stockGenerator = []
         self._startingPlayerID = 0
+        self._console = Console()
+        '''Create a console() class inside the game, create the themes for the different rarities Legendary has golden background with black text, epic has purple background with white text, uncommon has green background with black text, common has gray background with white text'''
 
     def getCurrentRound(self):
         return (self._currentRound)
@@ -182,25 +185,25 @@ class Game:
 
     def displayGameLobby(self):
         indexingOffset = 1
-        print(f"Game Lobby:")
+        self._console.print(f"Game Lobby:")
         for playerNumber in range(self._numberOfPlayers):
-            print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
+            self._console.print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
 
     def displayCurrentRound(self):
-        print(f"Round {self.getCurrentRound()}:")
+        self._console.print(f"Round {self.getCurrentRound()}:")
     
     def displayPlayerPortfolio(self):
-        self._players[self.getStartingPlayerID()].displayPortfolio()
+        self._players[self.getStartingPlayerID()].displayPortfolio(self._console)
 
     def displayPlayerValue(self, playerNumber):
         indexingOffset = 1
-        print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
+        self._console.print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
 
     def viewMyPack(self):
-        self._players[self.getStartingPlayerID()].viewCurrentPack()
+        self._players[self.getStartingPlayerID()].viewCurrentPack(self._console)
 
     def displayPlayerPack(self, playerNumber):
-        self._players[playerNumber].viewCurrentPack()
+        self._players[playerNumber].viewCurrentPack(self._console)
 
     def displayRankings(self):
         scoreboard = []
@@ -210,11 +213,11 @@ class Game:
 
         scoreboard = sorted(scoreboard, key = lambda score: score[1], reverse = True)
         indexingOffset = 1
-        print(f"Scoreboard")
-        print(f"Rank | Player Name | Portfolio Value ($)")
+        self._console.print(f"Scoreboard")
+        self._console.print(f"Rank | Player Name | Portfolio Value ($)")
         for playerNumber in range(self._numberOfPlayers):
             rank = playerNumber + indexingOffset
-            print(f"{rank}. {scoreboard[playerNumber]}")   
+            self._console.print(f"{rank}. {scoreboard[playerNumber]}")   
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -223,7 +226,7 @@ class Game:
         indexingOffset = 1
         playerName = ""
         randomlyGeneratedNames = self.generateRandomNames(generatedNames, self._numberOfPlayers)
-        print("Generating players....")
+        self._console.print("Generating players....")
         for playerNumber in range(self._numberOfPlayers):
             playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
             player = Player(playerName, (playerNumber + indexingOffset))
@@ -257,14 +260,14 @@ class Game:
             userEntry = input("Which stock would you like to select? (Enter a number)")
             try:
                 self.takeStockFromPack(self.getStartingPlayerID(), int(userEntry))
-                print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
+                self._console.print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
                 stockWasPicked = True
             except IndexError:
-                print(f"Index error: That is not a valid option!")
+                self._console.print(f"Index error: That is not a valid option!")
             except ValueError:
-                print(f"Value error: Please enter a number.")
+                self._console.print(f"Value error: Please enter a number.")
             except:
-                print(f"Please enter a number to select the correct option.")
+                self._console.print(f"Please enter a number to select the correct option.")
     
     def draftStock(self):
         indexingOffset = 1
@@ -310,4 +313,4 @@ class Game:
                 validChoiceMade = True
                 return False
             else:
-                print("Please enter y or n.")
+                self._console.print("Please enter y or n.")

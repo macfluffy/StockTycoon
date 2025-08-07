@@ -3,6 +3,7 @@ Stock Tycoon is a text based stocks drafting game. Players compete against AI to
 This package contains the following scripts:
 1. draftingGame.py - This is the game script. Run this to play the game. This script is a top level script showing how the game flows.
 2. classes.py, stockCatalogue.py, & botNames.py - These are vital for the game to run properly.
+
     classes.py:
         This contains all the class templates called in the draftingGame script. This would be the main engine to the game.
 
@@ -11,6 +12,12 @@ This package contains the following scripts:
 
     botNames.py:
         Just like stockCatalogue, this file can also be edited to create names for the bots.
+
+        External Libraries:
+        - Rich: This is compatible with Python 3.8 and later.
+        For more information about the package: https://github.com/Textualize/rich
+        https://rich.readthedocs.io/en/stable/introduction.html
+        
 
 Design Requirements:
 - Error Handling
