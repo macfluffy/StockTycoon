@@ -1,39 +1,68 @@
+# Stock Tycoon
+
 Stock Tycoon is a text based stocks drafting game. Players compete against AI to put together the most valuable portfolio!
 
-This package contains the following scripts:
-1. draftingGame.py - This is the game script. Run this to play the game. This script is a top level script showing how the game flows.
-2. classes.py, stockCatalogue.py, & botNames.py - These are vital for the game to run properly.
+<div align="center"><img src="gamebanner.png"></div>
 
-    classes.py:
-        This contains all the class templates called in the draftingGame script. This would be the main engine to the game.
+### How to play:
 
-    stockCatalogue.py:
-        This can be edited to create new stock names and stock types.
+    Stock Tycoon is played over 3 rounds. Each round you are given a pack of 15 stocks to choose from.
+    
+    Enter the stock number you want to take. 
+    
+    Every player will take a stock out of their pack, and then pass the pack on to the next player. This is repeated until there are no more stocks left in the packs.
+    
+    Each new round the direction in which you pass the pack alternates. At the end of the 3 rounds, the player with the most valuable portfolio wins!
 
-    botNames.py:
-        Just like stockCatalogue, this file can also be edited to create names for the bots.
 
-        External Libraries:
-        - Rich: This is compatible with Python 3.8 and later.
-        For more information about the package: https://github.com/Textualize/rich
-        https://rich.readthedocs.io/en/stable/introduction.html
+## Requirements
+
+- Python 3.7.0 and above
+- The dependencies listed below installed
+- PC / Mac compatible
+
+
+## Dependencies
+
+| Name | Description | Website |
+|------|-------------|---------|
+| pyFiglet | The game banner was produced by this libraries ASCII art features. |  https://github.com/SyntaxVoid/pyfiglet <br> http://www.figlet.org/ |
+| rich | The colouring, tablular and text formatting features from this library were used to improve the text based graphics in this application. | https://github.com/Textualize/rich <br> https://rich.readthedocs.io/en/stable/introduction.html |
+
+
+
+## Installation
+
+1. Open a virtual environment
+
+    In **WSL/Ubuntu**:
+
+        source venv/bin/activate
+
+2. Install the dependencies with pip or your preferred PyPI package manager.
+    
+        pip install rich
+        pip install pyfiglet
+
+
+
+## About
+
+This repository contains the following scripts:
+
+- draftingGame.py
+
+        This is the top level script. Execute this file to play the game.
+
+- classes.py
+
+        This is the game engine, containing all the class templates that is imported into draftingGame.py.
+
+- stockCatalogue.py
+
+        This is the list of all the stocks used in the game. To add variations to the game, alter this list with new stocks names and types.
+
+- botNames.py
         
-
-Design Requirements:
-- Error Handling
-- Variable scope
-- Use loops and conditional statements / Control Flow
-- Import four or more relevant external libraries
-- Use functions from one or more external libraries
-- Write 6 or more simple functions
-- Create 3 or more classes, using inheritance and composition
-- Use Input and Output in two or more ways
-- Apply DRY design principle
-- Apply consistent code style, no breaches.
-- Include a help file
-    - Comprehensive instructions
-    - Accurately describes steps to install the application
-    - Dependencies required by the application
-    - System/Hardware specifications
-- Includes documentation on the third party licenses used by this project and its ethical use
-
+        Contains the premade list of names assigned to the bots when generating extra players in the game lobby.
+        
