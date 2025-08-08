@@ -71,7 +71,7 @@ class Pack:
             table.add_row(f"[{rowColour}]{stockNumber}[/]", f"[{rowColour}]{stocks.getBrandName()}[/]", f"[{rowColour}]{stocks.getBrandType()}[/]", f"[{rowColour}]{stocks.getRarity()}[/]", f"[{rowColour}]{stocks.getValue()}[/]")
             stockNumber += 1
 
-        console.print(table)
+        console.print(table, justify = "center")
 
 
 class Portfolio:
@@ -202,16 +202,16 @@ class Game:
         self._currentRound += 1
 
     def whatIsYourName(self):
-        return input(f"Please enter your name: ")
+        return input("Please enter your name: ")
     
     def displayGameBanner(self):
         gameTitle = "Stock Tycoon"
         gameBanner = pyfiglet.figlet_format(gameTitle, font = "epic")
-        self._console.print(f"[value]{gameBanner}[/]")
+        self._console.print(f"[value]{gameBanner}[/]", justify = "center")
 
     def displayGameLobby(self):
         indexingOffset = 1
-        self._console.print(f"Game Lobby:")
+        self._console.print("Game Lobby:")
         for playerNumber in range(self._numberOfPlayers):
             self._console.print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
 
@@ -232,18 +232,25 @@ class Game:
         self._players[playerNumber].viewCurrentPack(self._console)
 
     def displayRankings(self):
-        scoreboard = []
+        rankings = []
         for player in self._players:
             playerScores = (player.getPlayerName(), player.getTotalValue())
-            scoreboard.append(playerScores)
+            rankings.append(playerScores)
 
-        scoreboard = sorted(scoreboard, key = lambda score: score[1], reverse = True)
+        rankings = sorted(rankings, key = lambda score: score[1], reverse = True)
+
+        tableTitle = "Scoreboard"
+        scoreboard = Table(title = tableTitle)
+        scoreboard.add_column("Rank", justify = "center")
+        scoreboard.add_column("Player Name", justify = "center")
+        scoreboard.add_column("Portfolio Value", justify = "center")
+
         indexingOffset = 1
-        self._console.print(f"Scoreboard")
-        self._console.print(f"Rank | Player Name | Portfolio Value ($)")
         for playerNumber in range(self._numberOfPlayers):
             rank = playerNumber + indexingOffset
-            self._console.print(f"{rank}. {scoreboard[playerNumber]}")   
+            scoreboard.add_row(f"{rank}.", f"{rankings[playerNumber][0]}", f"${rankings[playerNumber][1]}")
+
+        self._console.print(scoreboard, justify = "center")
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -289,11 +296,11 @@ class Game:
                 self._console.print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
                 stockWasPicked = True
             except IndexError:
-                self._console.print(f":warning: [warning][bold]Index error:[/] That is not a valid option![/]")
+                self._console.print(":warning: [warning][bold]Index error:[/] That is not a valid option![/]")
             except ValueError:
-                self._console.print(f":warning: [warning][bold]Value error:[/] Please enter a number![/]")
-            except:
-                self._console.print(f":warning: [warning]Please enter a number to select the correct option.[/]")
+                self._console.print(":warning: [warning][bold]Value error:[/] Please enter a number![/]")
+            except Exception:
+                self._console.print(":warning: [warning]Please enter a number to select the correct option.[/]")
     
     def draftStock(self):
         indexingOffset = 1
