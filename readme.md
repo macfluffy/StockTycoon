@@ -4,16 +4,27 @@ Stock Tycoon is a text based stocks drafting game. Players compete against AI to
 
 <div align="center"><img src="gamebanner.png"></div>
 
-### How to play:
 
-    Stock Tycoon is played over 3 rounds. Each round you are given a pack of 15 stocks to choose from.
-    
-    Enter the stock number you want to take. 
-    
-    Every player will take a stock out of their pack, and then pass the pack on to the next player. This is repeated until there are no more stocks left in the packs.
-    
-    Each new round the direction in which you pass the pack alternates. At the end of the 3 rounds, the player with the most valuable portfolio wins!
+### Rules
 
+Stock Tycoon is played over 3 rounds. Each round you are given a pack of 15 stocks to choose from.
+    
+Enter the stock number you want to take. 
+    
+Every player will take a stock out of their pack, and then pass the pack on to the next player. This is repeated until there are no more stocks left in the packs.
+    
+Each new round the direction in which you pass the pack alternates. At the end of the 3 rounds, the player with the most valuable portfolio wins!
+
+
+## How to play:
+
+1. Launch the game via your command line terminal
+
+        python stockTycoon.py
+
+2. Enter your player name
+3. Select a stock from your pack by entering the stock number
+4. Repeat until all stocks have been chosen
 
 ## Requirements
 
@@ -44,28 +55,14 @@ Stock Tycoon is a text based stocks drafting game. Players compete against AI to
         pip install rich
         pip install pyfiglet
 
-3. Once installed launch the game
-
-        python stockTycoon.py
-
 
 ## About
 
 This repository contains the following scripts:
 
-- stockTycoon.py
-
-        This is the top level script. Execute this file to play the game.
-
-- stockTyGameEngine.py
-
-        This is the game engine, containing all the class templates that is imported into stockTycoon.py.
-
-- stockCatalogue.py
-
-        This is the list of all the stocks used in the game. To add variations to the game, alter this list with new stocks names and types.
-
-- botNames.py
-        
-        Contains the premade list of names assigned to the bots when generating extra players in the game lobby.
-        
+| Script | Description |
+|--------|-------------|
+| stockTycoon.py | This is the top level script. Execute this file to play the game. |
+| stockTyGameEngine.py | This is the game engine, containing all the class templates that is imported into stockTycoon.py. |
+| stockCatalogue.py | This is the list of all the stocks used in the game. To add variations to the game, alter this list with new stocks names and types. |
+| botNames.py | Contains the premade list of names assigned to the bots when generating extra players in the game lobby. |
