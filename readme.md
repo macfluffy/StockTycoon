@@ -44,19 +44,22 @@ Stock Tycoon is a text based stocks drafting game. Players compete against AI to
         pip install rich
         pip install pyfiglet
 
+3. Once installed launch the game
+
+        python stockTycoon.py
 
 
 ## About
 
 This repository contains the following scripts:
 
-- draftingGame.py
+- stockTycoon.py
 
         This is the top level script. Execute this file to play the game.
 
-- classes.py
+- stockTyGameEngine.py
 
-        This is the game engine, containing all the class templates that is imported into draftingGame.py.
+        This is the game engine, containing all the class templates that is imported into stockTycoon.py.
 
 - stockCatalogue.py
 
