@@ -150,13 +150,8 @@ class Player:
         self._portfolio.addStock(stockTaken)
 
 
-class Game:
-    def __init__(self, numberOfPlayers):
-        self._numberOfPlayers = numberOfPlayers
-        self._players = []
-        self._currentRound = 1
-        self._stockGenerator = []
-        self._startingPlayerID = 0
+class Display:
+    def __init__(self):
         self._colourTheme = Theme({
             "common": "white on bright_black",
             "uncommon": "bright_magenta on green3",
@@ -168,6 +163,22 @@ class Game:
         })
         self._console = Console(theme = self._colourTheme)
 
+    def display(self, content):
+        self._console.print(content)
+
+    def displayCentered(self, content):
+        self._console.print(content, justify = "center")
+
+
+class Game(Display):
+    def __init__(self, numberOfPlayers):
+        super().__init__()
+        self._numberOfPlayers = numberOfPlayers
+        self._players = []
+        self._currentRound = 1
+        self._stockGenerator = []
+        self._startingPlayerID = 0
+        
     def getCurrentRound(self):
         return (self._currentRound)
     
@@ -212,23 +223,23 @@ class Game:
     def displayGameBanner(self):
         gameTitle = "Stock Tycoon"
         gameBanner = pyfiglet.figlet_format(gameTitle, font = "epic")
-        self._console.print(f"[value]{gameBanner}[/]", justify = "center")
+        self.displayCentered(f"[value]{gameBanner}[/]")
 
     def displayGameLobby(self):
         indexingOffset = 1
-        self._console.print("Game Lobby:")
+        self.display("Game Lobby:")
         for playerNumber in range(self._numberOfPlayers):
-            self._console.print(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
+            self.display(f"Player {playerNumber + indexingOffset}: {self._players[playerNumber].getPlayerName()}")
 
     def displayCurrentRound(self):
-        self._console.print(f"Round {self.getCurrentRound()}:")
+        self.display(f"Round {self.getCurrentRound()}:")
     
     def displayPlayerPortfolio(self):
         self._players[self.getStartingPlayerID()].displayPortfolio(self._console)
 
     def displayPlayerValue(self, playerNumber):
         indexingOffset = 1
-        self._console.print(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
+        self.display(f"Player {playerNumber + indexingOffset} ({self._players[playerNumber].getPlayerName()}): ${self._players[playerNumber].getTotalValue()}")
 
     def viewMyPack(self):
         self._players[self.getStartingPlayerID()].viewCurrentPack(self._console)
@@ -255,7 +266,7 @@ class Game:
             rank = playerNumber + indexingOffset
             scoreboard.add_row(f"{rank}.", f"{rankings[playerNumber][0]}", f"${rankings[playerNumber][1]}")
 
-        self._console.print(scoreboard, justify = "center")
+        self.displayCentered(scoreboard)
     
     def generateRandomNames(self, generatedNames, numberOfNamesToGenerate):
         return random.sample(generatedNames, numberOfNamesToGenerate)
@@ -264,7 +275,7 @@ class Game:
         indexingOffset = 1
         playerName = ""
         randomlyGeneratedNames = self.generateRandomNames(generatedNames, self._numberOfPlayers)
-        self._console.print("Generating players....")
+        self.display("Generating players....")
         for playerNumber in range(self._numberOfPlayers):
             playerName = self.whatIsYourName() if self.thisIsStartingPlayer(playerNumber) else randomlyGeneratedNames[playerNumber]
             player = Player(playerName, (playerNumber + indexingOffset))
@@ -298,14 +309,14 @@ class Game:
             userEntry = input("Which stock would you like to select? (Enter a number)")
             try:
                 self.takeStockFromPack(self.getStartingPlayerID(), int(userEntry))
-                self._console.print(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
+                self.display(f"You have added {self._players[self.getStartingPlayerID()].getMostRecentPick()} to your portfolio")
                 stockWasPicked = True
             except IndexError:
-                self._console.print(":warning: [warning][bold]Index error:[/] That is not a valid option![/]")
+                self.display(":warning: [warning][bold]Index error:[/] That is not a valid option![/]")
             except ValueError:
-                self._console.print(":warning: [warning][bold]Value error:[/] Please enter a number![/]")
+                self.display(":warning: [warning][bold]Value error:[/] Please enter a number![/]")
             except Exception:
-                self._console.print(":warning: [warning]Please enter a number to select the correct option.[/]")
+                self.display(":warning: [warning]Please enter a number to select the correct option.[/]")
     
     def draftStock(self):
         indexingOffset = 1
@@ -351,4 +362,4 @@ class Game:
                 validChoiceMade = True
                 return False
             else:
-                self._console.print("Please enter y or n.")
+                self.display("Please enter y or n.")
