@@ -68,7 +68,12 @@ class Pack:
         table.add_column("Value", justify = "center")
         for stocks in self._stocks:
             rowColour = stocks.getRarity().lower()
-            table.add_row(f"[{rowColour}]{stockNumber}[/]", f"[{rowColour}]{stocks.getBrandName()}[/]", f"[{rowColour}]{stocks.getBrandType()}[/]", f"[{rowColour}]{stocks.getRarity()}[/]", f"[{rowColour}]{stocks.getValue()}[/]")
+            table.add_row(
+                f"[{rowColour}]{stockNumber}[/]", 
+                f"[{rowColour}]{stocks.getBrandName()}[/]", 
+                f"[{rowColour}]{stocks.getBrandType()}[/]", 
+                f"[{rowColour}]{stocks.getRarity()}[/]", 
+                f"[{rowColour}]{stocks.getValue()}[/]")
             stockNumber += 1
 
         console.print(table, justify = "center")

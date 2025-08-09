@@ -1,4 +1,4 @@
-import classes
+import stockTyGameEngine
 from bots import botNames
 from sets import stockCatalogue
 
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     
     while playToken:
         # Initialise the Game
-        newGame = classes.Game(getDefaultPlayerCount())
+        newGame = stockTyGameEngine.Game(getDefaultPlayerCount())
         newGame.displayGameBanner()
 
         # Create the lobby
