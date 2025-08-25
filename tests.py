@@ -31,9 +31,44 @@ def testStock(stock, brandName, brandType, rarity, value):
     testStockRarity(stock, rarity)
     testStockValue(stock, value)
     
+def testPlayerName(player, testCondition):
+    print("Comparing the player names.....")
+    assert player.getPlayerName() == testCondition, "The player names do no match!"
+    testPassed()
+
+def testPlayerNumber(player, testCondition):
+    print("Comparing the player numbers.....")
+    assert player.getPlayerNumber() == testCondition, "The player numbers do not match!"
+    testPassed()
+
+def testPlayerCreation(player, playerName, playerNumber):
+    print("Testing player was created correctly.....")
+    testPlayerName(player, playerName)
+    testPlayerNumber(player, playerNumber)
+
 if __name__ == '__main__':
-    Coke = stockTyGameEngine.Stock(brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
-    testStock(Coke, brandName = "Coca-Cola", brandType = "Food & Beverage", rarity = "Common", value = 3000)
+    testBrandName = "Coca-Cola"
+    testBrandType = "Food & Beverage"
+    testRarity = "Common"
+    testValue = 3000
+    Coke = stockTyGameEngine.Stock(brandName = testBrandName,
+                                   brandType = testBrandType,
+                                   rarity = testRarity,
+                                   value = testValue)
+    testStock(stock = Coke,
+              brandName = testBrandName,
+              brandType = testBrandType,
+              rarity = testRarity,
+              value = testValue)
+    
+    dummyPlayerName = "Test Player"
+    dummyPlayersNumber = 1
+    testPlayer = stockTyGameEngine.Player(playerName = dummyPlayerName,
+                                          playerNumber = dummyPlayersNumber)
+    testPlayerCreation(player = testPlayer,
+                       playerName = dummyPlayerName,
+                       playerNumber = dummyPlayersNumber)
+    
     '''Pepsi = stockTyGameEngine.Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
     Solo = stockTyGameEngine.Stock(brandName = "Solo", brandType = "Food & Beverage", rarity = "Rare", value = 4500)'''
 
