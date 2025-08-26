@@ -50,25 +50,27 @@ class stockTester(tester):
 
 
 class playerCreationTester(tester):
-    def __init__(self, testType, dummyPlayerName, dummyPlayersNumber):
+    def __init__(self, testType, playerName, playerNumber):
         super().__init__(testType)
-        self.playerName = dummyPlayerName
-        self._playerNumber = dummyPlayersNumber
+        self._playerName = playerName
+        self._playerNumber = playerNumber
+        self._generatedPlayer = stockTyGameEngine.Player(playerName = self._playerName,
+                                                         playerNumber = self._playerNumber)
     
-    def testPlayerName(player, testCondition):
+    def testPlayerName(self):
         print("Comparing the player names.....")
-        assert player.getPlayerName() == testCondition, "The player names do no match!"
+        assert self._generatedPlayer.getPlayerName() == self._playerName, "The player names do no match!"
         self.testPassed()
 
-    def testPlayerNumber(player, testCondition):
+    def testPlayerNumber(self):
         print("Comparing the player numbers.....")
-        assert player.getPlayerNumber() == testCondition, "The player numbers do not match!"
+        assert self._generatedPlayer.getPlayerNumber() == self._playerNumber, "The player numbers do not match!"
         self.testPassed()
 
-    def testPlayerCreation(player, playerName, playerNumber):
+    def testPlayerCreation(self):
         print("Testing player was created correctly.....")
-        self.testPlayerName(player, playerName)
-        self.testPlayerNumber(player, playerNumber)
+        self.testPlayerName()
+        self.testPlayerNumber()
 
 
 if __name__ == '__main__':
@@ -76,22 +78,21 @@ if __name__ == '__main__':
     testBrandType = "Food & Beverage"
     testRarity = "Common"
     testValue = 3000
-    stockTest = stockTester(testType = "Stock Tester",
+    stockTest = stockTester(testType = "Stock Creation Tester",
                             brandName = testBrandName,
                             brandType = testBrandType,
                             rarity = testRarity,
                             value = testValue)
     stockTest.testStockCreation()
     
-'''    dummyPlayerName = "Test Player"
+    dummyPlayerName = "Test Player"
     dummyPlayersNumber = 1
-    testPlayer = stockTyGameEngine.Player(playerName = dummyPlayerName,
-                                          playerNumber = dummyPlayersNumber)
-    testPlayerCreation(player = testPlayer,
-                       playerName = dummyPlayerName,
-                       playerNumber = dummyPlayersNumber)
+    playerCreationTest = playerCreationTester(testType = "Player Creation Tester",
+                                              playerName = dummyPlayerName,
+                                              playerNumber = dummyPlayersNumber)
+    playerCreationTest.testPlayerCreation()
     
-    dummyPortfolio = stockTyGameEngine.Portfolio(owner = testPlayer)'''
+'''dummyPortfolio = stockTyGameEngine.Portfolio(owner = testPlayer)'''
     
 '''Pepsi = stockTyGameEngine.Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
     Solo = stockTyGameEngine.Stock(brandName = "Solo", brandType = "Food & Beverage", rarity = "Rare", value = 4500)'''
