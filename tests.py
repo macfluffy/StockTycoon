@@ -5,6 +5,9 @@ class tester:
     def __init__(self, testType):
         self._testType = testType
 
+    def getTestType(self):
+        return self._testType
+
     def testPassed(self):
         print("Test Passed!")
 
