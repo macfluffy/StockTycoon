@@ -108,7 +108,9 @@ if __name__ == '__main__':
                                               playerNumber = dummyPlayersNumber)
     playerCreationTest.testPlayerCreation()
     
-'''dummyPortfolio = stockTyGameEngine.Portfolio(owner = testPlayer)'''
+    portfolioCreationTest = portfolioTester(testType = "Portfolio Creation Tester",
+                                            owner = playerCreationTest.getGeneratedPlayer())
+    portfolioCreationTest.testPortfolioValue()
     
 '''Pepsi = stockTyGameEngine.Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
     Solo = stockTyGameEngine.Stock(brandName = "Solo", brandType = "Food & Beverage", rarity = "Rare", value = 4500)'''
