@@ -1,67 +1,89 @@
 import pytest
 import stockTyGameEngine
 
-def testPassed():
-    print("Test Passed!")
+class tester:
+    def __init__(self, testType):
+        self._testType = testType
 
-def testStockName(stock, testCondition):
-    print("Comparing the stock names.....")
-    assert stock.getBrandName() == testCondition, "The stock's brand name does not match!"
-    testPassed()
+    def testPassed(self):
+        print("Test Passed!")
 
-def testStockType(stock, testCondition):
-    print("Comparing the stock brand types.....")
-    assert stock.getBrandType() == testCondition, "The stock's brand type does not match!"
-    testPassed()
 
-def testStockRarity(stock, testCondition):
-    print("Comparing the stock rarities.....")
-    assert stock.getRarity() == testCondition, "The stock's rarity does not match!"
-    testPassed()
+class stockTester(tester):
+    def __init__(self, testType, brandName, brandType, rarity, value):
+        super().__init__(testType)
+        self._brandName = brandName
+        self._brandType = brandType
+        self._rarity = rarity
+        self._value = value
+        self._generatedStock = stockTyGameEngine.Stock(brandName = self._brandName,
+                                                       brandType = self._brandType,
+                                                       rarity = self._rarity,
+                                                       value = self._value)
 
-def testStockValue(stock, testCondition):
-    print("Comparing the stock values.....")
-    assert stock.getValue() == testCondition, "The stock's value is different!"
-    testPassed()
+    def testStockName(self):
+        print("Comparing the stock names.....")
+        assert self._generatedStock.getBrandName() == self._brandName, "The stock's brand name does not match!"
+        self.testPassed()
 
-def testStock(stock, brandName, brandType, rarity, value):
-    print("Testing Stock was created correctly.....")
-    testStockName(stock, brandName)
-    testStockType(stock, brandType)
-    testStockRarity(stock, rarity)
-    testStockValue(stock, value)
+    def testStockType(self):
+        print("Comparing the stock brand types.....")
+        assert self._generatedStock.getBrandType() == self._brandType, "The stock's brand type does not match!"
+        self.testPassed()
+
+    def testStockRarity(self):
+        print("Comparing the stock rarities.....")
+        assert self._generatedStock.getRarity() == self._rarity, "The stock's rarity does not match!"
+        self.testPassed()
+
+    def testStockValue(self):
+        print("Comparing the stock values.....")
+        assert self._generatedStock.getValue() == self._value, "The stock's value is different!"
+        self.testPassed()
+
+    def testStockCreation(self):
+        print("Testing Stock was created correctly.....")
+        self.testStockName()
+        self.testStockType()
+        self.testStockRarity()
+        self.testStockValue()
+
+
+class playerCreationTester(tester):
+    def __init__(self, testType, dummyPlayerName, dummyPlayersNumber):
+        super().__init__(testType)
+        self.playerName = dummyPlayerName
+        self._playerNumber = dummyPlayersNumber
     
-def testPlayerName(player, testCondition):
-    print("Comparing the player names.....")
-    assert player.getPlayerName() == testCondition, "The player names do no match!"
-    testPassed()
+    def testPlayerName(player, testCondition):
+        print("Comparing the player names.....")
+        assert player.getPlayerName() == testCondition, "The player names do no match!"
+        self.testPassed()
 
-def testPlayerNumber(player, testCondition):
-    print("Comparing the player numbers.....")
-    assert player.getPlayerNumber() == testCondition, "The player numbers do not match!"
-    testPassed()
+    def testPlayerNumber(player, testCondition):
+        print("Comparing the player numbers.....")
+        assert player.getPlayerNumber() == testCondition, "The player numbers do not match!"
+        self.testPassed()
 
-def testPlayerCreation(player, playerName, playerNumber):
-    print("Testing player was created correctly.....")
-    testPlayerName(player, playerName)
-    testPlayerNumber(player, playerNumber)
+    def testPlayerCreation(player, playerName, playerNumber):
+        print("Testing player was created correctly.....")
+        self.testPlayerName(player, playerName)
+        self.testPlayerNumber(player, playerNumber)
+
 
 if __name__ == '__main__':
     testBrandName = "Coca-Cola"
     testBrandType = "Food & Beverage"
     testRarity = "Common"
     testValue = 3000
-    Coke = stockTyGameEngine.Stock(brandName = testBrandName,
-                                   brandType = testBrandType,
-                                   rarity = testRarity,
-                                   value = testValue)
-    testStock(stock = Coke,
-              brandName = testBrandName,
-              brandType = testBrandType,
-              rarity = testRarity,
-              value = testValue)
+    stockTest = stockTester(testType = "Stock Tester",
+                            brandName = testBrandName,
+                            brandType = testBrandType,
+                            rarity = testRarity,
+                            value = testValue)
+    stockTest.testStockCreation()
     
-    dummyPlayerName = "Test Player"
+'''    dummyPlayerName = "Test Player"
     dummyPlayersNumber = 1
     testPlayer = stockTyGameEngine.Player(playerName = dummyPlayerName,
                                           playerNumber = dummyPlayersNumber)
@@ -69,7 +91,9 @@ if __name__ == '__main__':
                        playerName = dummyPlayerName,
                        playerNumber = dummyPlayersNumber)
     
-    '''Pepsi = stockTyGameEngine.Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
+    dummyPortfolio = stockTyGameEngine.Portfolio(owner = testPlayer)'''
+    
+'''Pepsi = stockTyGameEngine.Stock(brandName = "Pepsi", brandType = "Food & Beverage", rarity = "Uncommon", value = 3000)
     Solo = stockTyGameEngine.Stock(brandName = "Solo", brandType = "Food & Beverage", rarity = "Rare", value = 4500)'''
 
 '''    pack1 = stockTyGameEngine.Pack([Coke, Pepsi, Solo], 1, 2)
