@@ -72,6 +72,22 @@ class playerCreationTester(tester):
         self.testPlayerName()
         self.testPlayerNumber()
 
+    def getGeneratedPlayer(self):
+        return self._generatedPlayer
+
+
+class portfolioTester(tester):
+    def __init__(self, testType, owner):
+        super().__init__(testType)
+        self._owner = owner
+        self._generatedPortfolio = stockTyGameEngine.Portfolio(self._owner)
+        self._dummyTotalValue = 0
+
+    def testPortfolioValue(self):
+        print("Checking the total value of the generated portfolio.....")
+        assert self._generatedPortfolio.getTotalValue() == self._dummyTotalValue, "The total values of the portfolios do not match!"
+        self.testPassed()
+
 
 if __name__ == '__main__':
     testBrandName = "Coca-Cola"
